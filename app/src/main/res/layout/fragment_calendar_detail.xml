@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view_calendardetail"
+        android:layout_width="400dp"
+        android:layout_height="600dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.43" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3C3C3C"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/edittext_memo"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="@+id/view_calendardetail"
+        app:layout_constraintTop_toTopOf="@+id/view_calendardetail"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <Button
+        android:id="@+id/waterdrop_color"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/waterdrop_color"
+        app:layout_constraintBottom_toTopOf="@+id/edittext_memo"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toEndOf="@+id/tv_date"
+        app:layout_constraintTop_toTopOf="@+id/view_calendardetail"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <Button
+        android:id="@+id/waterdrop_detail"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/waterdrop"
+        app:layout_constraintBottom_toTopOf="@+id/edittext_memo"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toEndOf="@+id/tv_date"
+        app:layout_constraintTop_toTopOf="@+id/view_calendardetail"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <Button
+        android:id="@+id/injection_color"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/injection_color"
+        app:layout_constraintBottom_toTopOf="@+id/edittext_memo"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/waterdrop_detail"
+        app:layout_constraintTop_toTopOf="@+id/view_calendardetail"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <Button
+        android:id="@+id/injection_detail"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/injection"
+        app:layout_constraintBottom_toTopOf="@+id/edittext_memo"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/waterdrop_detail"
+        app:layout_constraintTop_toTopOf="@+id/view_calendardetail"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <EditText
+        android:id="@+id/edittext_memo"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:ems="10"
+        android:gravity="start|top|center_vertical|center_horizontal"
+        android:hint="\n                                 memo"
+        android:textSize="15sp"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="@+id/view_calendardetail"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/view_calendardetail"
+        app:layout_constraintTop_toTopOf="@+id/view_calendardetail"
+        app:layout_constraintVertical_bias="0.2"
+        android:privateImeOptions="defaultInputmode=korean" />
+
+
+    <ImageView
+        android:id="@+id/image_upload"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_calendardetail"
+        app:layout_constraintEnd_toEndOf="@+id/view_calendardetail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/view_calendardetail"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_memo"
+        app:layout_constraintVertical_bias="0.1"
+        app:srcCompat="@drawable/camera_imageview" />
+
+    <Button
+        android:id="@+id/btn_canceldetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="50dp"
+        android:background="#FFFFFF"
+        android:text="취소"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_upload" />
+
+    <Button
+        android:id="@+id/btn_savedetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:background="#FDFDFD"
+        android:text="저장"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_upload" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

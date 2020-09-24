@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/previous"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/left_arrow"
+            android:gravity="center_horizontal|center_vertical" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="3"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="#555555"
+            android:textIsSelectable="false"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/right_arrow"
+            android:gravity="center" />
+
+
+
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="607dp"
+        android:layout_weight="1">
+
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/chart"
+            android:layout_width="415dp"
+            android:layout_height="481dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="52dp"
+            android:layout_height="605dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/blank"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@drawable/rect_kg_box"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/jan"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:background="#F9F9F9"
+                android:text="Jan"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/feb"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:background="#F9F9F9"
+                android:text="Feb"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/mar"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="#F9F9F9"
+                android:text="Mar"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/apr"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="#F9F9F9"
+                android:text="Apr"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/may"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="May"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/jun"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="#F9F9F9"
+                android:text="Jun"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/jul"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="Jul"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/aug"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="Aug"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/sep"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="Sep"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/oct"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="Oct"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/nov"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="Nov"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/dec"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:background="#F9F9F9"
+                android:text="Dec"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/calendar" />
+
+        <Button
+            android:id="@+id/kg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/color_kg" />
+
+        <Button
+            android:id="@+id/account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/account" />
+
+        <Button
+            android:id="@+id/puppy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab_main_puppy" />
+    </LinearLayout>
+
+</LinearLayout>
