@@ -36,6 +36,7 @@ import org.techtown.puppydiary.network.Response.SignupResponse;
 import org.techtown.puppydiary.network.Response.UpdatepwResponse;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -78,7 +79,7 @@ public interface ServiceApi {
      */
 
     @POST("/user/findpw") //비밀번호 찾기
-    Call<FindpwResponse> findpw (@Header("token") String token, @Body FindpwData data);
+    Call<FindpwResponse> findpw (@Body FindpwData data);
     /*
     {
         "email" : "hyohyo@naver.com"
@@ -133,7 +134,7 @@ public interface ServiceApi {
 
     @Multipart
     @POST("/calendar/{year}/{month}/{date}/photo") //달력 사진 업로드
-    Call<CalendarPhotoResponse> calendarphoto (@Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date,  @Part MultipartBody photo); //@Body CalendarPhotoData data,
+    Call<CalendarPhotoResponse> calendarphoto (@Part MultipartBody.Part img, @Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date,  @Part CalendarPhotoData photo); //@Body CalendarPhotoData data,
 
     @POST("/calendar/update") //달력 update
     Call<CalendarUpdateResponse> calendarupdate (@Header("token") String token, @Body CalendarUpdateData data);

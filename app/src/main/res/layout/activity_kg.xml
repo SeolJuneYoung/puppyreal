@@ -15,9 +15,9 @@
         <Button
             android:id="@+id/previous"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:layout_weight="1"
-            android:background="@drawable/left_arrow"
+            android:background="@drawable/left"
             android:gravity="center_horizontal|center_vertical" />
 
         <TextView
@@ -28,6 +28,7 @@
             android:layout_weight="3"
             android:gravity="center_horizontal|center_vertical"
             android:textColor="#555555"
+            android:fontFamily="@font/jalnan"
             android:textIsSelectable="false"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -35,9 +36,9 @@
         <Button
             android:id="@+id/next"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:layout_weight="1"
-            android:background="@drawable/right_arrow"
+            android:background="@drawable/right"
             android:gravity="center" />
 
 
@@ -80,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Jan"
                 android:textSize="15sp" />
 
@@ -88,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Feb"
                 android:textSize="15sp" />
 
@@ -96,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Mar"
                 android:textSize="15sp" />
 
@@ -104,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Apr"
                 android:textSize="15sp" />
 
@@ -112,6 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="May"
                 android:textSize="15sp" />
 
@@ -120,6 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Jun"
                 android:textSize="15sp" />
 
@@ -128,6 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Jul"
                 android:textSize="15sp" />
 
@@ -136,6 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Aug"
                 android:textSize="15sp" />
 
@@ -144,6 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Sep"
                 android:textSize="15sp" />
 
@@ -152,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Oct"
                 android:textSize="15sp" />
 
@@ -160,6 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Nov"
                 android:textSize="15sp" />
 
@@ -168,6 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
+                android:fontFamily="@font/jalnan"
                 android:text="Dec"
                 android:textSize="15sp" />
 

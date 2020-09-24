@@ -18,10 +18,13 @@ import org.techtown.puppydiary.network.Data.CheckemailData;
 import org.techtown.puppydiary.network.Data.SigninData;
 import org.techtown.puppydiary.network.Data.SignupData;
 import org.techtown.puppydiary.network.Response.CheckemailResponse;
+import org.techtown.puppydiary.network.Response.MyinfoResponse;
 import org.techtown.puppydiary.network.Response.SigninResponse;
 import org.techtown.puppydiary.network.Response.SignupResponse;
 import org.techtown.puppydiary.network.RetrofitClient;
 import org.techtown.puppydiary.network.ServiceApi;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +32,7 @@ import retrofit2.Response;
 
 public class Signup extends AppCompatActivity {
 
+    public static int set_flag;
     ActionBar actionBar;
     private ServiceApi service;
     private EditText email_check;
@@ -64,7 +68,7 @@ public class Signup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String email = email_check.getText().toString();
-                //Log.e("email", "email "+ email);
+                Log.e("email", "email "+ email);
                 emailCheck(new CheckemailData(email));
             }
         });
@@ -90,12 +94,12 @@ public class Signup extends AppCompatActivity {
         service.checkemail(data).enqueue(new Callback<CheckemailResponse>() {
             @Override
             public void onResponse(Call<CheckemailResponse> call, Response<CheckemailResponse> response) {
-                CheckemailResponse result = response.body();
+                CheckemailResponse result =  response.body();
+
                 Toast.makeText(Signup.this, result.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onFailure(Call<CheckemailResponse> call, Throwable t) {
+            @Override public void onFailure(Call<CheckemailResponse> call, Throwable t) {
                 Toast.makeText(Signup.this, "이메일 중복 에러 발생", Toast.LENGTH_SHORT).show();
                 Log.e("이메일 중복 에러 발생", t.getMessage());
             }
@@ -123,5 +127,6 @@ public class Signup extends AppCompatActivity {
             }
         });
     }
+
 
 }

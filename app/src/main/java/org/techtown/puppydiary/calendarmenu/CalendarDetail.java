@@ -1,13 +1,22 @@
 package org.techtown.puppydiary.calendarmenu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +26,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
+import org.apache.commons.io.IOUtils;
 import org.techtown.puppydiary.R;
+import org.techtown.puppydiary.SetPuppy;
 import org.techtown.puppydiary.accountmenu.MoneyEdit;
 import org.techtown.puppydiary.accountmenu.MoneyTab;
+import org.techtown.puppydiary.network.Data.ProfileData;
 import org.techtown.puppydiary.network.Data.calendar.CalendarPhotoData;
 import org.techtown.puppydiary.network.Data.calendar.CalendarUpdateData;
+import org.techtown.puppydiary.network.Response.ProfileResponse;
 import org.techtown.puppydiary.network.Response.calendar.CalendarPhotoResponse;
 import org.techtown.puppydiary.network.Response.calendar.CalendarUpdateResponse;
 import org.techtown.puppydiary.network.Response.calendar.ShowDayResponse;
@@ -32,9 +47,18 @@ import org.techtown.puppydiary.network.RetrofitClient;
 import org.techtown.puppydiary.network.ServiceApi;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,8 +70,8 @@ public class CalendarDetail extends AppCompatActivity {
     int year = 0;
     int month = 0;
     int date = 0;
-    int state_waterdrop = -1;
-    int state_injection = -1;
+    int state_waterdrop = 0;
+    int state_injection = 0;
     int showmonth_pos = 0;
     String memo;
     String photo;
@@ -69,6 +93,10 @@ public class CalendarDetail extends AppCompatActivity {
     TextView tv_date;
 
     private ServiceApi service;
+
+
+    Uri photoUri;
+    String absolutePath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,7 +156,8 @@ public class CalendarDetail extends AppCompatActivity {
                         }
                         if (my.get(0).getPhoto() != null) {
                             photo = my.get(0).getPhoto();
-                            //dd
+                            Bitmap myBitmap = BitmapFactory.decodeFile(photo);
+                            image_upload.setImageBitmap(myBitmap);
                         }
                         state_waterdrop = my.get(0).getWater();
                         state_injection = my.get(0).getInject();
@@ -149,7 +178,7 @@ public class CalendarDetail extends AppCompatActivity {
                             waterdrop_btn.setVisibility(View.INVISIBLE);
                             injection_btn2.setVisibility(View.VISIBLE);
                             injection_btn.setVisibility(View.INVISIBLE);
-                        } else {
+                        } else if (state_waterdrop == 0 && state_injection == 0){
                             waterdrop_btn2.setVisibility(View.INVISIBLE);
                             waterdrop_btn.setVisibility(View.VISIBLE);
                             injection_btn2.setVisibility(View.INVISIBLE);
@@ -167,15 +196,6 @@ public class CalendarDetail extends AppCompatActivity {
         });
 
         tv_date.setText(year + ". " + (month+1) + ". " + date);
-
-
-       // image_byte = dbHelper.getResultimg(useridx, pos, year, month);
-        if (image_byte != null) {
-            BitmapFactory.decodeByteArray(image_byte, 0, image_byte.length);
-            image_upload.setImageBitmap(upload_bitmap);
-        } else {
-            image_upload.setImageResource(R.drawable.camera_imageview);
-        }
 
 
         // on
@@ -227,7 +247,7 @@ public class CalendarDetail extends AppCompatActivity {
         image_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, REQUEST_CODE);
@@ -239,13 +259,7 @@ public class CalendarDetail extends AppCompatActivity {
             public void onClick(View view) {
                 save_btn.setBackgroundColor( Color.parseColor("#D6336B"));
                 memo = memo_et.getText().toString();
-                /*if (image_byte == null){
-                    dbHelper.insert(useridx, pos, year, month, text, null, waterdrop, injection);
-                } else {
-                    dbHelper.insert(useridx, pos, year, month, text, image_byte, waterdrop, injection);
-                }*/
                 CalendarUpdate(new CalendarUpdateData(year, month, date, memo, state_injection, state_waterdrop));
-                //Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -260,25 +274,32 @@ public class CalendarDetail extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
 
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
-                    //DBHelper dbHelper = new DBHelper(getApplicationContext(), "EDITMEMO.db", null, 1);
-                    InputStream stream = getContentResolver().openInputStream(data.getData());
-                    upload_bitmap = BitmapFactory.decodeStream(stream);
 
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    upload_bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    image_byte = baos.toByteArray();
+                    // img를 bitmap으로 받아옴
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    Bitmap bitmap = BitmapFactory.decodeStream(in);
 
-                    image_upload.setImageBitmap(upload_bitmap);
+                    bitmap = rotateImage(bitmap, 90);
+                    image_upload.setImageBitmap(bitmap);
+
+                    photoUri = data.getData();
+
+                    CalendarPhoto(new CalendarPhotoData());
+
+                    in.close();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+
                 }
             }
             else if(resultCode == RESULT_CANCELED) {
@@ -311,21 +332,40 @@ public class CalendarDetail extends AppCompatActivity {
         });
     }
 
-//    private void CalendarPhoto(CalendarPhotoData data){
-//        service.calendarphoto(data).enqueue(new Callback<CalendarUpdateResponse>() {
-//            @Override
-//            public void onResponse(Call<CalendarPhotoResponse> call, Response<CalendarPhotoResponse> response) {
-//                CalendarUpdateResponse result = response.body();
-//                Toast.makeText(CalendarDetail.this, result.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CalendarUpdateResponse> call, Throwable t) {
-//                Toast.makeText(CalendarDetail.this, "달력 업데이트 에러 발생", Toast.LENGTH_SHORT).show();
-//                Log.e("달력 업데이트 에러 발생", t.getMessage());
-//            }
-//        });
-//    }
 
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
+
+
+
+    private void CalendarPhoto(CalendarPhotoData data){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+
+        File file = new File(absolutePath);
+        // Create a request body with file and image media type
+        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        // Create MultipartBody.Part using file request-body,file name and part name
+        MultipartBody.Part part = MultipartBody.Part.createFormData("profile", file.getName(), fileReqBody);
+        //Create request body with text description and text media type
+        //RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
+
+        service.calendarphoto(part, token, year, month, date, data).enqueue(new Callback<CalendarPhotoResponse>() {
+            @Override
+            public void onResponse(Call<CalendarPhotoResponse> call, Response<CalendarPhotoResponse> response) {
+                CalendarPhotoResponse result = response.body();
+                Toast.makeText(CalendarDetail.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CalendarPhotoResponse> call, Throwable t) {
+
+            }
+        });
+    }
 }

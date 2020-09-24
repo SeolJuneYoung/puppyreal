@@ -21,18 +21,27 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="290dp"
+                android:layout_width="320dp"
                 android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:fontFamily="@font/jalnan"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="date"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
 
             <Button
                 android:id="@+id/money_calendar"
-                android:layout_width="57dp"
-                android:layout_height="45dp"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_weight="3.5"
                 android:background="@drawable/tab_main_calendar"
+                android:gravity="center"
                 android:textColor="#E87D75" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
 
 
         </LinearLayout>
@@ -57,11 +66,12 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="#F6BBCF"
+            android:fontFamily="@font/jalnan"
             android:gravity="center_horizontal|center_vertical"
             android:hint="what?"
-            android:textColorHint="#FFFF"
             android:inputType="text"
-            android:textSize="20dp" />
+            android:textColorHint="#FFFF"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/edit_price"
@@ -69,11 +79,12 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="#F6BBCF"
-            android:hint="how much?"
-            android:textColorHint="#FFFF"
+            android:fontFamily="@font/jalnan"
             android:gravity="center_horizontal|center_vertical"
+            android:hint="how much?"
             android:inputType="number"
-            android:textSize="20sp" />
+            android:textColorHint="#FFFF"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/plus"
@@ -83,6 +94,7 @@
             android:background="@drawable/rect_kg_box"
             android:onClick="OnClick_addButton"
             android:text="+"
+            android:fontFamily="@font/jalnan"
             android:textColor="#E6285B"
             android:textSize="30sp" />
 
@@ -99,10 +111,11 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="#F6BBCF"
+            android:fontFamily="@font/jalnan"
             android:gravity="center_vertical|right"
             android:text="Total : "
             android:textColor="#FFFF"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/total_sum"
@@ -111,10 +124,11 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:background="#F6BBCF"
+            android:fontFamily="@font/jalnan"
             android:gravity="right|center_vertical"
             android:hint="0"
             android:textColor="#FFFF"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
     </LinearLayout>
 
     <LinearLayout
