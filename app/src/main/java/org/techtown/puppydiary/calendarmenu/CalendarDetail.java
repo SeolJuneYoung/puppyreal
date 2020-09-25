@@ -16,8 +16,10 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.PointerIcon;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,13 +27,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.io.IOUtils;
+import org.techtown.puppydiary.Login;
 import org.techtown.puppydiary.R;
 import org.techtown.puppydiary.SetPuppy;
 import org.techtown.puppydiary.accountmenu.MoneyEdit;
@@ -40,12 +46,14 @@ import org.techtown.puppydiary.network.Data.ProfileData;
 import org.techtown.puppydiary.network.Data.calendar.CalendarPhotoData;
 import org.techtown.puppydiary.network.Data.calendar.CalendarUpdateData;
 import org.techtown.puppydiary.network.Response.ProfileResponse;
+import org.techtown.puppydiary.network.Response.SigninResponse;
 import org.techtown.puppydiary.network.Response.calendar.CalendarPhotoResponse;
 import org.techtown.puppydiary.network.Response.calendar.CalendarUpdateResponse;
 import org.techtown.puppydiary.network.Response.calendar.ShowDayResponse;
 import org.techtown.puppydiary.network.RetrofitClient;
 import org.techtown.puppydiary.network.ServiceApi;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,12 +61,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -138,60 +150,9 @@ public class CalendarDetail extends AppCompatActivity {
         injection_btn2.setVisibility(View.INVISIBLE);
         injection_btn.setVisibility(View.VISIBLE);
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String token = sp.getString("TOKEN", "");
-        Call<ShowDayResponse> showday = service.showday(token, year, month, date);
-        showday.enqueue(new Callback<ShowDayResponse>() {
-            @Override
-            public void onResponse(Call<ShowDayResponse> call, Response<ShowDayResponse> response) {
-                if(response.isSuccessful()) {
-                    ShowDayResponse showday = response.body();
-                    List<ShowDayResponse.ShowDay> my = showday.getData();
-                    if (my != null) {
-                        if (my.get(0).getMemo() != null) {
-                            memo = my.get(0).getMemo();
-                            memo_et.setText(memo);
-                        }
-                        if (my.get(0).getPhoto() != null) {
-                            photo = my.get(0).getPhoto();
-                            Bitmap myBitmap = BitmapFactory.decodeFile(photo);
-                            image_upload.setImageBitmap(myBitmap);
-                        }
-                        state_waterdrop = my.get(0).getWater();
-                        state_injection = my.get(0).getInject();
-                        if (state_waterdrop == 1 && state_injection == 0){
-                            // 물방울만 색깔 있을 때
-                            waterdrop_btn2.setVisibility(View.VISIBLE);
-                            waterdrop_btn.setVisibility(View.INVISIBLE);
-                            injection_btn2.setVisibility(View.INVISIBLE);
-                            injection_btn.setVisibility(View.VISIBLE);
-                        } else if (state_waterdrop == 0 && state_injection == 1){
-                            // 주사기만 색깔 있을 때
-                            waterdrop_btn2.setVisibility(View.INVISIBLE);
-                            waterdrop_btn.setVisibility(View.VISIBLE);
-                            injection_btn2.setVisibility(View.VISIBLE);
-                            injection_btn.setVisibility(View.INVISIBLE);
-                        } else if (state_waterdrop == 1 && state_injection == 1){
-                            waterdrop_btn2.setVisibility(View.VISIBLE);
-                            waterdrop_btn.setVisibility(View.INVISIBLE);
-                            injection_btn2.setVisibility(View.VISIBLE);
-                            injection_btn.setVisibility(View.INVISIBLE);
-                        } else if (state_waterdrop == 0 && state_injection == 0){
-                            waterdrop_btn2.setVisibility(View.INVISIBLE);
-                            waterdrop_btn.setVisibility(View.VISIBLE);
-                            injection_btn2.setVisibility(View.INVISIBLE);
-                            injection_btn.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ShowDayResponse> call, Throwable t) {
-                Toast.makeText(CalendarDetail.this, "getcall 에러 발생", Toast.LENGTH_SHORT).show();
-                Log.e("getcall 에러 발생", t.getMessage());
-            }
-        });
+        ShowDay();
+
 
         tv_date.setText(year + ". " + (month+1) + ". " + date);
 
@@ -258,7 +219,7 @@ public class CalendarDetail extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save_btn.setBackgroundColor( Color.parseColor("#D6336B"));
+                save_btn.setBackgroundColor( Color.parseColor("#ed426e"));
                 memo = memo_et.getText().toString();
                 CalendarUpdate(new CalendarUpdateData(year, month, date, memo, state_injection, state_waterdrop));
                 CalendarPhoto();
@@ -269,7 +230,7 @@ public class CalendarDetail extends AppCompatActivity {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cancel_btn.setBackgroundColor( Color.parseColor("#D6336B"));
+                cancel_btn.setBackgroundColor( Color.parseColor("#ed426e"));
                 finish();
             }
         });
@@ -295,9 +256,9 @@ public class CalendarDetail extends AppCompatActivity {
 
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     mediaPath = cursor.getString(columnIndex);
-                    System.out.println("!!!!!!!!!!!!!! " + mediaPath);
-                    // Set the Image in ImageView for Previewing the Media
                     image_upload.setImageURI(selectedImage);
+                    CalendarPhoto();
+
                     cursor.close();
 
                 } catch (Exception e) {
@@ -317,7 +278,7 @@ public class CalendarDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<CalendarUpdateResponse> call, Response<CalendarUpdateResponse> response) {
                 CalendarUpdateResponse result = response.body();
-               // Toast.makeText(CalendarDetail.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(CalendarDetail.this, result.getMessage(), Toast.LENGTH_SHORT).show();
                 if(result.getSuccess() == true) {
                     Intent intent_month = new Intent(getApplicationContext(), CalendarTab.class);
                     intent_month.putExtra("after_year", year);
@@ -337,13 +298,26 @@ public class CalendarDetail extends AppCompatActivity {
 
     private void CalendarPhoto(){
 
-        File file = new File(mediaPath);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-        System.out.println("REQUEST!!!! " + file + ", " + requestBody);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
-        System.out.println("REQUEST111!!!! " + fileToUpload.toString());
+        // File file = new File(mediaPath);
+        //  RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-file"), file);
+        // MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+
+        builder.addFormDataPart("key", "multipart/form-data");
+        builder.addFormDataPart("values", mediaPath);
+        System.out.println(mediaPath);
+
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sp.getString("TOKEN", "");
+
+        //Toast.makeText(CalendarDetail.this, token, Toast.LENGTH_SHORT).show();
+
+        File file = new File(mediaPath);
+        MultipartBody requestBody = builder.build();
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
         service.calendarphoto(fileToUpload, token, year, month, date).enqueue(new Callback<CalendarPhotoResponse>() {
             @Override
             public void onResponse(Call<CalendarPhotoResponse> call, Response<CalendarPhotoResponse> response) {
@@ -357,4 +331,63 @@ public class CalendarDetail extends AppCompatActivity {
             }
         });
     }
+
+    private void ShowDay() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        Call<ShowDayResponse> showday = service.showday(token, year, month, date);
+        showday.enqueue(new Callback<ShowDayResponse>() {
+            @Override
+            public void onResponse(Call<ShowDayResponse> call, Response<ShowDayResponse> response) {
+                if (response.isSuccessful()) {
+                    ShowDayResponse showday = response.body();
+                    List<ShowDayResponse.ShowDay> my = showday.getData();
+                    if (my != null) {
+                        if (my.get(0).getMemo() != null) {
+                            memo = my.get(0).getMemo();
+                            memo_et.setText(memo);
+                        }
+                        if (my.get(0).getPhoto() != null) {
+                            photo = my.get(0).getPhoto();
+                            System.out.println("!!!!!!! "+photo);
+                            Picasso.get().load(photo).into(image_upload);
+                        }
+
+                        state_waterdrop = my.get(0).getWater();
+                        state_injection = my.get(0).getInject();
+                        if (state_waterdrop == 1 && state_injection == 0) {
+                            // 물방울만 색깔 있을 때
+                            waterdrop_btn2.setVisibility(View.VISIBLE);
+                            waterdrop_btn.setVisibility(View.INVISIBLE);
+                            injection_btn2.setVisibility(View.INVISIBLE);
+                            injection_btn.setVisibility(View.VISIBLE);
+                        } else if (state_waterdrop == 0 && state_injection == 1) {
+                            // 주사기만 색깔 있을 때
+                            waterdrop_btn2.setVisibility(View.INVISIBLE);
+                            waterdrop_btn.setVisibility(View.VISIBLE);
+                            injection_btn2.setVisibility(View.VISIBLE);
+                            injection_btn.setVisibility(View.INVISIBLE);
+                        } else if (state_waterdrop == 1 && state_injection == 1) {
+                            waterdrop_btn2.setVisibility(View.VISIBLE);
+                            waterdrop_btn.setVisibility(View.INVISIBLE);
+                            injection_btn2.setVisibility(View.VISIBLE);
+                            injection_btn.setVisibility(View.INVISIBLE);
+                        } else if (state_waterdrop == 0 && state_injection == 0) {
+                            waterdrop_btn2.setVisibility(View.INVISIBLE);
+                            waterdrop_btn.setVisibility(View.VISIBLE);
+                            injection_btn2.setVisibility(View.INVISIBLE);
+                            injection_btn.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShowDayResponse> call, Throwable t) {
+                Toast.makeText(CalendarDetail.this, "getcall 에러 발생", Toast.LENGTH_SHORT).show();
+                Log.e("getcall 에러 발생", t.getMessage());
+            }
+        });
+    }
+
 }
