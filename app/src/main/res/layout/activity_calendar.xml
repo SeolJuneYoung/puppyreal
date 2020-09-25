@@ -20,9 +20,10 @@
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="5dp"
             android:layout_weight="3"
+            android:fontFamily="@font/jalnan"
             android:gravity="center_horizontal|center_vertical"
             android:textColor="#555555"
             android:textIsSelectable="false"
@@ -42,12 +43,68 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_day"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:text="⠀  일ㅤㅤ   월⠀⠀ㅤ 화  ⠀ㅤ 수⠀ ⠀ㅤ목⠀ ⠀ㅤ금⠀⠀ㅤ토"
-        android:textSize="17sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="sun" />
+        <TextView
+            android:id="@+id/mon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="mon" />
+        <TextView
+            android:id="@+id/tue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="tue" />
+        <TextView
+            android:id="@+id/wed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="wed" />
+        <TextView
+            android:id="@+id/thu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="thu" />
+        <TextView
+            android:id="@+id/fri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="fri" />
+        <TextView
+            android:id="@+id/sat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jalnan"
+            android:gravity="center"
+            android:text="sat"/>
+    </LinearLayout>
 
     <GridView
         android:id="@+id/gridview"

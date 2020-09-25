@@ -71,9 +71,7 @@ public class Findpwd extends AppCompatActivity {
     }
 
     private void SendEmail(FindpwData data){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String token = sp.getString("TOKEN", "");
-        service.findpw(token, data).enqueue(new Callback<FindpwResponse>() {
+        service.findpw(data).enqueue(new Callback<FindpwResponse>() {
             @Override
             public void onResponse(Call<FindpwResponse> call, Response<FindpwResponse> response) {
                 FindpwResponse result = response.body();

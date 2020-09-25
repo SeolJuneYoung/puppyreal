@@ -1,9 +1,9 @@
 package org.techtown.puppydiary.network.Data.calendar;
 
-public class CalendarPhotoData {
-    private String photo;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
-//    public PhotoData(String photo) {
-//        this.photo = photo;
-//    }
+public class CalendarPhotoData {
+
+
 }
