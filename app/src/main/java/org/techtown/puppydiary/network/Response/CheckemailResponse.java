@@ -1,11 +1,13 @@
 package org.techtown.puppydiary.network.Response;
 
+import java.util.List;
+
 public class CheckemailResponse {
 
     private int status;
     private boolean success;
     private String message;
-    private Checkemail data;
+    private List<Checkemail> data;
 
     public int getStatus(){
         return status;
@@ -19,7 +21,7 @@ public class CheckemailResponse {
         return message;
     }
 
-    public Checkemail getData(){
+    public List<Checkemail> getData(){
         return data;
     }
 

@@ -1,74 +1,57 @@
 package org.techtown.puppydiary.network.Response;
 
-public class RegisterResponse {
+import java.util.List;
 
-    private Checkpuppyname puppyname;
-    private Checkage age;
-    private Checkbirth birth;
-    private Checkgender gender;
+public class RegisterResponse {
 
     private int status;
     private boolean success;
     private String message;
+    private List<Register> data;
 
-    public int getStatus(){
+    public int getStatus() {
         return status;
     }
 
-    public boolean getSuccess(){
+    public boolean getSuccess() {
         return success;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 
-    public Checkpuppyname getPuppyname(){
-        return puppyname;
+    public List<Register> getData(){
+        return data;
     }
 
-    public Checkage getAge(){
-        return age;
-    }
-
-    public Checkbirth getBirth(){
-        return birth;
-    }
-
-    public Checkgender getGender(){
-        return gender;
-    }
-
-    public class Checkpuppyname {
+    public class Register {
+        private String image;
         private String puppyname;
+        private int age;
+        private String birth;
+        private int gender;
+
+        public String getImage() {
+            return image;
+        }
 
         public String getPuppyname(){
             return puppyname;
         }
-    }
 
-    public class Checkage {
-        private String age;
-
-        public String getAge(){
+        public int getAge(){
             return age;
         }
-    }
-
-    public class Checkbirth {
-        private String birth;
 
         public String getBirth(){
             return birth;
         }
-    }
 
-    public class Checkgender {
-        private String gender;
-
-        public String getGender(){
+        public int getGender(){
             return gender;
         }
+
     }
 
 }
