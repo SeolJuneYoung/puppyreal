@@ -309,7 +309,9 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
             ViewHolder holder = null;
             if (convertView == null) {
                 convertView = minflater.inflate(mresource, null);
-                convertView.setLayoutParams(new GridView.LayoutParams(1080 / 7 + 1080 % 7, 200));
+
+                convertView.setLayoutParams(new GridView.LayoutParams(1440 / 7 + 1440 % 7, 300));
+
                 holder = new ViewHolder();
                 holder.tvItem = (TextView) convertView.findViewById(R.id.tv_item_gridview);
                 holder.waterdrop = (ImageView) convertView.findViewById(R.id.waterdrop);

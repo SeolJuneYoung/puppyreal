@@ -94,9 +94,8 @@ public class CalendarDetail extends AppCompatActivity {
 
     private ServiceApi service;
 
-
-    Uri photoUri;
-    String absolutePath;
+    String mediaPath;
+    String[] mediaColumns = {MediaStore.Video.Media._ID};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -247,10 +246,9 @@ public class CalendarDetail extends AppCompatActivity {
         image_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, REQUEST_CODE);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, 0);
             }
         });
 
@@ -260,6 +258,7 @@ public class CalendarDetail extends AppCompatActivity {
                 save_btn.setBackgroundColor( Color.parseColor("#D6336B"));
                 memo = memo_et.getText().toString();
                 CalendarUpdate(new CalendarUpdateData(year, month, date, memo, state_injection, state_waterdrop));
+                CalendarPhoto();
 
             }
         });
@@ -274,7 +273,6 @@ public class CalendarDetail extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -285,18 +283,19 @@ public class CalendarDetail extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    // img를 bitmap으로 받아옴
-                    InputStream in = getContentResolver().openInputStream(data.getData());
-                    Bitmap bitmap = BitmapFactory.decodeStream(in);
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                    bitmap = rotateImage(bitmap, 90);
-                    image_upload.setImageBitmap(bitmap);
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    assert cursor != null;
+                    cursor.moveToFirst();
 
-                    photoUri = data.getData();
-
-                    CalendarPhoto(new CalendarPhotoData());
-
-                    in.close();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    mediaPath = cursor.getString(columnIndex);
+                    System.out.println("!!!!!!!!!!!!!! " + mediaPath);
+                    // Set the Image in ImageView for Previewing the Media
+                    image_upload.setImageBitmap(BitmapFactory.decodeFile(mediaPath));
+                    cursor.close();
 
                 } catch (Exception e) {
 
@@ -333,29 +332,15 @@ public class CalendarDetail extends AppCompatActivity {
     }
 
 
+    private void CalendarPhoto(){
 
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
-    }
+        File file = new File(mediaPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
 
-
-
-    private void CalendarPhoto(CalendarPhotoData data){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sp.getString("TOKEN", "");
-
-        File file = new File(absolutePath);
-        // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("profile", file.getName(), fileReqBody);
-        //Create request body with text description and text media type
-        //RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
-
-        service.calendarphoto(part, token, year, month, date, data).enqueue(new Callback<CalendarPhotoResponse>() {
+        service.calendarphoto(fileToUpload, token, year, month, date).enqueue(new Callback<CalendarPhotoResponse>() {
             @Override
             public void onResponse(Call<CalendarPhotoResponse> call, Response<CalendarPhotoResponse> response) {
                 CalendarPhotoResponse result = response.body();
