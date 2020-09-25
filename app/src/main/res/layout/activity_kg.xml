@@ -49,7 +49,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="607dp"
+        android:layout_height="match_parent"
         android:layout_weight="1">
 
         <com.github.mikephil.charting.charts.HorizontalBarChart
@@ -58,15 +58,17 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/linearLayout2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="52dp"
-            android:layout_height="605dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -81,120 +83,120 @@
                 android:id="@+id/jan"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Jan"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/feb"
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Feb"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/mar"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Mar"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/apr"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Apr"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/may"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="May"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/jun"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Jun"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/jul"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Jul"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/aug"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Aug"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/sep"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Sep"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/oct"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Oct"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/nov"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Nov"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/dec"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
+                android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Dec"
-                android:layout_weight="1"
                 android:textSize="15sp" />
 
             <Button

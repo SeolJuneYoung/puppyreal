@@ -95,7 +95,6 @@ public class CalendarDetail extends AppCompatActivity {
     private ServiceApi service;
 
     String mediaPath;
-    String[] mediaColumns = {MediaStore.Video.Media._ID};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -246,9 +245,13 @@ public class CalendarDetail extends AppCompatActivity {
         image_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_CODE);
+                /*
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, 0);
+                 */
             }
         });
 
@@ -294,7 +297,7 @@ public class CalendarDetail extends AppCompatActivity {
                     mediaPath = cursor.getString(columnIndex);
                     System.out.println("!!!!!!!!!!!!!! " + mediaPath);
                     // Set the Image in ImageView for Previewing the Media
-                    image_upload.setImageBitmap(BitmapFactory.decodeFile(mediaPath));
+                    image_upload.setImageURI(selectedImage);
                     cursor.close();
 
                 } catch (Exception e) {
@@ -314,7 +317,7 @@ public class CalendarDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<CalendarUpdateResponse> call, Response<CalendarUpdateResponse> response) {
                 CalendarUpdateResponse result = response.body();
-                Toast.makeText(CalendarDetail.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(CalendarDetail.this, result.getMessage(), Toast.LENGTH_SHORT).show();
                 if(result.getSuccess() == true) {
                     Intent intent_month = new Intent(getApplicationContext(), CalendarTab.class);
                     intent_month.putExtra("after_year", year);
