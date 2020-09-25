@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy);
         actionBar.setDisplayUseLogoEnabled(true);
@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity {
         button_lgn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button_lgn.setBackgroundColor( Color.parseColor("#D6336B"));
+                button_lgn.setBackgroundColor( Color.parseColor("#ed426e"));
                 email = emailview.getText().toString();
                 password = passwordview.getText().toString();
                 startLogin(new SigninData(email, password));

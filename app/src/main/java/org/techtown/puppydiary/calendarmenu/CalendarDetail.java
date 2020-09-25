@@ -102,7 +102,7 @@ public class CalendarDetail extends AppCompatActivity {
         setContentView(R.layout.fragment_calendar_detail);
 
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy) ;
         actionBar.setDisplayUseLogoEnabled(true) ;
@@ -338,9 +338,10 @@ public class CalendarDetail extends AppCompatActivity {
     private void CalendarPhoto(){
 
         File file = new File(mediaPath);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        System.out.println("REQUEST!!!! " + file + ", " + requestBody);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
-
+        System.out.println("REQUEST111!!!! " + fileToUpload.toString());
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sp.getString("TOKEN", "");
         service.calendarphoto(fileToUpload, token, year, month, date).enqueue(new Callback<CalendarPhotoResponse>() {

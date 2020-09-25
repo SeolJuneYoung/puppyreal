@@ -55,7 +55,8 @@
             android:layout_weight="1"
             android:fontFamily="@font/jalnan"
             android:gravity="center"
-            android:text="sun"
+            android:text="sun "
+            android:textColor="#F85742"
             android:textSize="17sp" />
 
         <TextView
@@ -75,7 +76,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/jalnan"
             android:gravity="center"
-            android:text="tue"
+            android:text="tue "
             android:textSize="17sp" />
 
         <TextView
@@ -85,7 +86,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/jalnan"
             android:gravity="center"
-            android:text="wed"
+            android:text="wed "
             android:textSize="17sp" />
 
         <TextView
@@ -95,7 +96,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/jalnan"
             android:gravity="center"
-            android:text="thu"
+            android:text="thu "
             android:textSize="17sp" />
 
         <TextView
@@ -105,7 +106,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/jalnan"
             android:gravity="center"
-            android:text="fri"
+            android:text="fri "
             android:textSize="17sp" />
 
         <TextView
@@ -115,8 +116,9 @@
             android:layout_weight="1"
             android:fontFamily="@font/jalnan"
             android:gravity="center"
-            android:text="sat"
+            android:text=" sat"
             android:textSize="17sp" />
+
     </LinearLayout>
 
     <GridView

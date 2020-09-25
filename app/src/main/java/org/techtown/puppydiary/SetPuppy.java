@@ -71,7 +71,7 @@ public class SetPuppy extends AppCompatActivity {
         setContentView(R.layout.activity_setpuppy);
 
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy) ;
         actionBar.setDisplayUseLogoEnabled(true) ;
@@ -180,7 +180,7 @@ public class SetPuppy extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                button.setBackgroundColor( Color.parseColor("#D6336B"));
+                button.setBackgroundColor( Color.parseColor("#ed426e"));
 
                 if( !(puppy_name.getText().equals(""))) {
                     String puppyname = puppy_name.getText().toString();

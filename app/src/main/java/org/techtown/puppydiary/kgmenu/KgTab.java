@@ -68,7 +68,7 @@ public class KgTab extends AppCompatActivity {
 
         // MoneyEdit.context = getApplicationContext();
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy) ;
         actionBar.setDisplayUseLogoEnabled(true) ;

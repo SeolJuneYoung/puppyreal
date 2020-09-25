@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -97,7 +98,7 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_calendar);
 
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy) ;
         actionBar.setDisplayUseLogoEnabled(true) ;
@@ -310,7 +311,10 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
             if (convertView == null) {
                 convertView = minflater.inflate(mresource, null);
 
-                //convertView.setLayoutParams(new GridView.LayoutParams(1440 / 7 + 1440 % 7, 300));
+                DisplayMetrics metrics = getResources().getDisplayMetrics();
+                int screenW = metrics.widthPixels;
+                int screenH = metrics.heightPixels;
+                convertView.setLayoutParams(new GridView.LayoutParams(screenW/7 + screenW%7, screenH/9));
 
                 holder = new ViewHolder();
                 holder.tvItem = (TextView) convertView.findViewById(R.id.tv_item_gridview);
@@ -373,7 +377,7 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
                 holder.tvItem.setText(day.getDay());
                 if (day.isInMonth()) {
                     if (position % 7 == 0) {
-                        holder.tvItem.setTextColor(Color.RED);
+                        holder.tvItem.setTextColor(getResources().getColor(R.color.setRed));
                     } else {
                         holder.tvItem.setTextColor(Color.GRAY);
                     }

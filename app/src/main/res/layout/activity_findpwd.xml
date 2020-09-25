@@ -97,7 +97,7 @@
         android:id="@+id/btn_sendemail"
         android:layout_width="125dp"
         android:layout_height="45dp"
-        android:background="#CCCCCC"
+        android:background="#E4E4E4"
         android:fontFamily="@font/jalnan"
         android:text="임시 비밀번호 발송"
         android:textColor="#FFFFFF"

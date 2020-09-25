@@ -56,7 +56,7 @@ public class MoneyEdit extends AppCompatActivity {
 
         MoneyEdit.context = getApplicationContext();
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy) ;
         actionBar.setDisplayUseLogoEnabled(true) ;
@@ -99,7 +99,7 @@ public class MoneyEdit extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edit.setBackgroundColor( Color.parseColor("#D6336B"));
+                edit.setBackgroundColor( Color.parseColor("#ed426e"));
                 price = Integer.parseInt(et_price.getText().toString());
                 //price = et_price.getText().toString();
                 memo = et_memo.getText().toString();
@@ -111,7 +111,7 @@ public class MoneyEdit extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete.setBackgroundColor( Color.parseColor("#D6336B"));
+                delete.setBackgroundColor( Color.parseColor("#ed426e"));
                 DeleteAccount();
                 //dbHelper.delete(useridx, position, getyear, getmonth, getday);
                 Intent intent_after = new Intent(MoneyEdit.this, MoneyTab.class);

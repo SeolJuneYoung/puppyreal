@@ -63,7 +63,7 @@ public class KgPopup extends AppCompatActivity {
 
         // MoneyEdit.context = getApplicationContext();
         actionBar = getSupportActionBar();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffed426e));
         getSupportActionBar().setTitle("댕댕이어리");
         actionBar.setIcon(R.drawable.white_puppy) ;
         actionBar.setDisplayUseLogoEnabled(true) ;
@@ -162,7 +162,7 @@ public class KgPopup extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                close.setBackgroundColor( Color.parseColor("#D6336B"));
+                close.setBackgroundColor( Color.parseColor("#ed426e"));
                 Intent intent_kgclose = new Intent(getApplicationContext(), KgTab.class); //일단 바로 검색결과 띄음
                 startActivity(intent_kgclose);
             }
