@@ -4,12 +4,16 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Base64;
@@ -25,10 +29,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
 import org.techtown.puppydiary.calendarmenu.CalendarTab;
+import org.techtown.puppydiary.network.Data.ProfileData;
 import org.techtown.puppydiary.network.Data.RegisterData;
 import org.techtown.puppydiary.network.Response.MyinfoResponse;
+import org.techtown.puppydiary.network.Response.ProfileResponse;
 import org.techtown.puppydiary.network.Response.RegisterResponse;
 import org.techtown.puppydiary.network.RetrofitClient;
 import org.techtown.puppydiary.network.ServiceApi;
@@ -45,6 +52,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static org.techtown.puppydiary.Signup.set_flag;
 //import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class SetPuppy extends AppCompatActivity {
@@ -53,8 +62,8 @@ public class SetPuppy extends AppCompatActivity {
     ActionBar actionBar;
     private ServiceApi service;
     Button button;
-    EditText b_day;
-    DatePickerDialog.OnDateSetListener setListener;
+    TextView b_day;
+    DatePickerDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,26 +87,27 @@ public class SetPuppy extends AppCompatActivity {
         textView.setText(content);
 
         Calendar cal = Calendar.getInstance();
-        b_day = findViewById(R.id.bd_input);
+        final TextView b_day = findViewById(R.id.bd_input);
 
         final int year = cal.get(Calendar.YEAR);
         final int month = cal.get(Calendar.MONTH);
         final int day = cal.get(Calendar.DAY_OF_MONTH);
 
+        dialog = new DatePickerDialog(
+                SetPuppy.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        month = month + 1;
+                        String date = year + "/ " + month + "/ " + day;
+                        b_day.setText(date);
+                    }
+                }, year, month, day);
+
 
         b_day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerDialog dialog = new DatePickerDialog(
-                        SetPuppy.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                month = month + 1;
-                                String date = year + "/ " + month + "/ " + day;
-                                b_day.setText(date);
-                            }
-                        }, year, month, day);
                 dialog.show();
             }
         });
@@ -107,20 +117,26 @@ public class SetPuppy extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, REQUEST_CODE);
+                //Intent intent = new Intent();
+                //intent.setType("image/*");
+                //intent.setAction(Intent.ACTION_GET_CONTENT);
+                //startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
         final EditText puppy_name = findViewById(R.id.name_input);
         final EditText age_ = findViewById(R.id.age_input);
-        final EditText birth_ = findViewById(R.id.bd_input);
+        //b_day = findViewById(R.id.bd_input);
         final RadioButton option_male = (RadioButton) findViewById(R.id.male);
         final RadioButton option_female = (RadioButton) findViewById(R.id.female);
 
-        final Call<MyinfoResponse> getCall = service.Getmyinfo();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        final Call<MyinfoResponse> getCall = service.Getmyinfo(token);
         getCall.enqueue(new Callback<MyinfoResponse>() {
             @Override
             public void onResponse(Call<MyinfoResponse> call, Response<MyinfoResponse> response) {
@@ -137,7 +153,7 @@ public class SetPuppy extends AppCompatActivity {
                             age_.setText(null);
                         }
 
-                        birth_.setText(myinfo1.getBirth());
+                        b_day.setText(myinfo1.getBirth());
 
                         int gender = myinfo1.getGender();
                         if ( gender ==1 ){
@@ -159,16 +175,17 @@ public class SetPuppy extends AppCompatActivity {
                 Log.e("실패", "했지롱");
             }
         });
-        button = findViewById(R.id.finish_button);
+
+        button = (Button) findViewById(R.id.finish_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 button.setBackgroundColor( Color.parseColor("#D6336B"));
 
-                if( !(puppy_name.getText().equals("")) && !(age_.getText().equals("")) ) {
+                if( !(puppy_name.getText().equals(""))) {
                     String puppyname = puppy_name.getText().toString();
                     Integer age = Integer.parseInt("" + age_.getText());
-                    String birth = birth_.getText().toString();
+                    String birth = b_day.getText().toString();
                     int gender = 0; // 1이 남자, 2가 여자
 
                     if (option_male.isChecked() && (!option_female.isChecked())) {
@@ -191,6 +208,8 @@ public class SetPuppy extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
         String filename = "";
 
         if (requestCode == REQUEST_CODE) {
@@ -201,10 +220,17 @@ public class SetPuppy extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeStream(in);
 
                     bitmap = rotateImage(bitmap, 90);
+                    imageView.setImageBitmap(bitmap);
+
+                    Uri photoUri = data.getData();
+                    String absolutePath =  getPath(photoUri);
+                    //Toast.makeText(getApplicationContext(), ""+photoUri, Toast.LENGTH_LONG).show();
+
+                    profilePhoto(new ProfileData("profile", absolutePath));
 
                     in.close();
 
-                    imageView.setImageBitmap(bitmap);
+                    //imageView.setImageBitmap(bitmap);
 
                 } catch (Exception e) {
 
@@ -216,59 +242,45 @@ public class SetPuppy extends AppCompatActivity {
         }
     }
 
-/*
-    private void uploadImageUsingRetrofit(Bitmap bitmap){
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        String image = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-        String name = String.valueOf(Calendar.getInstance().getTimeInMillis());
-
-        service = RetrofitClient.getClient().create(ServiceApi.class);
-
-        Call<String> call = myImageInterface.getImageData(name,image);
-        call.enqueue(new Callback<String>() {
+    private void profilePhoto(final ProfileData data){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.profile(token, data).enqueue(new Callback<ProfileResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        Toast.makeText(getApplicationContext(), "Image Uploaded Successfully!!", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "No response from the server", Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Toast.makeText(getApplicationContext(), "Response not successful "+response.toString(), Toast.LENGTH_SHORT).show();
-                }
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                ProfileResponse result = response.body();
+
+                Toast.makeText(SetPuppy.this, result.getMessage(), Toast.LENGTH_SHORT).show();
             }
+
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error occurred!", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+
             }
         });
     }
 
-*/
-
     private void infoInputCheck(final RegisterData data){
-        service.registerinfo(data).enqueue(new Callback<RegisterResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.registerinfo(token, data).enqueue(new Callback<RegisterResponse>() {
 
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 RegisterResponse result = response.body();
-                //result.getData();
-
-                //SharedPreferences sharedPref = getSharedPreferences("token", Context.MODE_PRIVATE);
-                // HashMap<String, String> header = new HashMap<>();
-                //String token = sharedPref.getString("token", "token");
-                //header.put("tokenjwt", token);
-
-                //("Context-Type = application/jason");
 
                 Toast.makeText(SetPuppy.this, result.getMessage(), Toast.LENGTH_SHORT).show();
                 if(result.getMessage().equals("강아지 정보 등록 성공")){
-                    Intent intent = new Intent(getApplicationContext(), CalendarTab.class);
-                    startActivity(intent);
-                    finish();
+                    if(set_flag == 0) {
+                        Intent intent = new Intent(getApplicationContext(), CalendarTab.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        Intent intent = new Intent(getApplicationContext(), MypuppyTab.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
 
@@ -287,5 +299,13 @@ public class SetPuppy extends AppCompatActivity {
                 matrix, true);
     }
 
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        CursorLoader loader = new CursorLoader(this, uri, projection, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(columnIndex);
+    }
 
 }

@@ -38,8 +38,6 @@ public class Login extends AppCompatActivity {
     String email;
     String password;
 
-    public static String jwtToken = "";
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -47,7 +45,7 @@ public class Login extends AppCompatActivity {
         actionBar = getSupportActionBar();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
         getSupportActionBar().setTitle("댕댕이어리");
-        actionBar.setIcon(R.drawable.white_puppy);
+        actionBar.setIcon(R.drawable.name);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
@@ -101,11 +99,12 @@ public class Login extends AppCompatActivity {
                 //로그인 성공
                 if(result.getSuccess()==true){
 
-                    jwtToken = result.getJwtToken();
+                    String jwtToken = result.getJwtToken();
 
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("TOKEN", jwtToken).apply();
+
 
                     //("Context-Type = application/
 

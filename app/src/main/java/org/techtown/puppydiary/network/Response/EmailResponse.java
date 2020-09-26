@@ -9,7 +9,6 @@ public class EmailResponse {
     private String message;
     private String data;
 
-//    private List<Eml> data;
 
     public int getStatus(){
         return status;
@@ -23,21 +22,11 @@ public class EmailResponse {
         return message;
     }
 
-    //public List<Eml> getData(){
-//        return data;
-//    }
 
     public String getData() {
         return data;
     }
 
 
-//    public class Eml {
-//        private String email;
-//
-//        public String getEmail(){
-//            return email;
-//        }
-//    }
 
 }

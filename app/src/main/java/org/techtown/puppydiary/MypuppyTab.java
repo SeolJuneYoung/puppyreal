@@ -1,11 +1,14 @@
 package org.techtown.puppydiary;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import static org.techtown.puppydiary.Signup.set_flag;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -110,10 +113,11 @@ public class MypuppyTab extends AppCompatActivity {
 
 
         // 설정아이콘 누르면 설정으로 넘어가게
-        ImageView set_button = findViewById(R.id.set_button);
+        final ImageView set_button = findViewById(R.id.set_button);
         set_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                set_flag = 1;
                 Intent intent = new Intent(getApplicationContext(), SetPuppy.class);
                 startActivity(intent);
             }
@@ -137,7 +141,9 @@ public class MypuppyTab extends AppCompatActivity {
 
         //mypuppyInfo();
 
-        final Call<MyinfoResponse> getCall = service.Getmyinfo();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        final Call<MyinfoResponse> getCall = service.Getmyinfo(token);
         getCall.enqueue(new Callback<MyinfoResponse>() {
             @Override
             public void onResponse(Call<MyinfoResponse> call, Response<MyinfoResponse> response) {
@@ -148,9 +154,21 @@ public class MypuppyTab extends AppCompatActivity {
                     String result = "";
 
                     for(MyinfoResponse.Myinfo myinfo1 : my) {
-                        puppy_name.setText(myinfo1.getPuppyname());
+                        if( myinfo1.getPuppyname().equals("") ){
+                            puppy_name.setText("ihi");
+                        }
+                        else {
+                            puppy_name.setText(myinfo1.getPuppyname());
+                        }
+
                         age_.setText("" + myinfo1.getAge());
-                        birth_.setText(myinfo1.getBirth());
+
+                        if(myinfo1.getBirth().equals("")){
+                            birth_.setText("24살");
+                        }
+                        else {
+                            birth_.setText(myinfo1.getBirth());
+                        }
 
                         int gender = myinfo1.getGender();
                         if ( gender ==1 ){

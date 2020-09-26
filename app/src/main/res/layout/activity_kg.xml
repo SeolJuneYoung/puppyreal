@@ -70,14 +70,14 @@
 
             <Button
                 android:id="@+id/blank"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="5dp"
                 android:background="@drawable/rect_kg_box"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/jan"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="36dp"
                 android:background="#F9F9F9"
                 android:text="Jan"
@@ -85,7 +85,7 @@
 
             <Button
                 android:id="@+id/feb"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="34dp"
                 android:background="#F9F9F9"
                 android:text="Feb"
@@ -93,7 +93,7 @@
 
             <Button
                 android:id="@+id/mar"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="32dp"
                 android:background="#F9F9F9"
                 android:text="Mar"
@@ -101,7 +101,7 @@
 
             <Button
                 android:id="@+id/apr"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="32dp"
                 android:background="#F9F9F9"
                 android:text="Apr"
@@ -109,7 +109,7 @@
 
             <Button
                 android:id="@+id/may"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
                 android:text="May"
@@ -117,7 +117,7 @@
 
             <Button
                 android:id="@+id/jun"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="32dp"
                 android:background="#F9F9F9"
                 android:text="Jun"
@@ -125,7 +125,7 @@
 
             <Button
                 android:id="@+id/jul"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
                 android:text="Jul"
@@ -133,7 +133,7 @@
 
             <Button
                 android:id="@+id/aug"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
                 android:text="Aug"
@@ -141,7 +141,7 @@
 
             <Button
                 android:id="@+id/sep"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
                 android:text="Sep"
@@ -149,7 +149,7 @@
 
             <Button
                 android:id="@+id/oct"
-                android:layout_width="match_parent"
+                android:layout_width="41dp"
                 android:layout_height="33dp"
                 android:background="#F9F9F9"
                 android:text="Oct"
@@ -157,18 +157,25 @@
 
             <Button
                 android:id="@+id/nov"
-                android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_width="41dp"
+                android:layout_height="32dp"
                 android:background="#F9F9F9"
                 android:text="Nov"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/dec"
-                android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_width="41dp"
+                android:layout_height="30dp"
                 android:background="#F9F9F9"
                 android:text="Dec"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/blank1"
+                android:layout_width="41dp"
+                android:layout_height="60dp"
+                android:background="#F9F9F9"
                 android:textSize="15sp" />
 
 

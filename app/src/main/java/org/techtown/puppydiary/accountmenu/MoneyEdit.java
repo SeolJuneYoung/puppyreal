@@ -2,9 +2,11 @@ package org.techtown.puppydiary.accountmenu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -122,7 +124,9 @@ public class MoneyEdit extends AppCompatActivity {
     }
 
     private void AccountUpdate(AccountUpdateData data){
-        service.accountupdate(idx, data).enqueue(new Callback<AccountUpdateResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.accountupdate(token, idx, data).enqueue(new Callback<AccountUpdateResponse>() {
             @Override
             public void onResponse(Call<AccountUpdateResponse> call, Response<AccountUpdateResponse> response) {
                 AccountUpdateResponse result = response.body();
@@ -146,7 +150,9 @@ public class MoneyEdit extends AppCompatActivity {
     }
 
     private void DeleteAccount(){
-        service.deleteaccount(idx).enqueue(new Callback<DeleteAccountResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.deleteaccount(token, idx).enqueue(new Callback<DeleteAccountResponse>() {
             @Override
             public void onResponse(Call<DeleteAccountResponse> call, Response<DeleteAccountResponse> response) {
                 DeleteAccountResponse result = response.body();

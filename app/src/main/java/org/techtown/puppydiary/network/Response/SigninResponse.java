@@ -19,7 +19,6 @@ public class SigninResponse {
     private int userIdx;
     private String jwtToken;
 
-
     public int getStatus(){
         return status;
     }

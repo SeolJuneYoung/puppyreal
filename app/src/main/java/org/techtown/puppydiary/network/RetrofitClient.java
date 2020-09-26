@@ -13,6 +13,7 @@ public class RetrofitClient {
 
     private final static String BASE_URL = "http://52.79.228.150:3000";
     private static Retrofit retrofit = null;
+    static Retrofit mRetrofit;
 
     private RetrofitClient() {
     }

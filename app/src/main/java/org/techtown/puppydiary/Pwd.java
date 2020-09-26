@@ -35,7 +35,6 @@ public class Pwd extends AppCompatActivity {
 
     ActionBar actionBar;
     private ServiceApi service;
-    String jwtToken = Login.jwtToken;
     Button finish;
     String email;
 
@@ -105,7 +104,9 @@ public class Pwd extends AppCompatActivity {
         final EditText pwd_new = findViewById(R.id.new_pwd);
         final EditText pwd_ck = findViewById(R.id.new_chk);
 
-        final Call<EmailResponse> getCall = service.getEmail();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        final Call<EmailResponse> getCall = service.getEmail(token);
         getCall.enqueue(new Callback<EmailResponse>() {
             @Override
             public void onResponse(Call<EmailResponse> call, Response<EmailResponse> response) {
@@ -113,10 +114,7 @@ public class Pwd extends AppCompatActivity {
                 EmailResponse emailResponse = response.body();
                 if(response.isSuccessful()){
                     email = emailResponse.getData();
-
-//                    for(EmailResponse.Eml eml1 : my) {
                     email1.setText(email);
-//                    }
                 }
             }
 
@@ -135,7 +133,7 @@ public class Pwd extends AppCompatActivity {
                 String old1 = old_pwd.getText().toString();
                 String new1 = pwd_new.getText().toString();
                 String new2 = pwd_ck.getText().toString();
-                ChangePassword(new UpdatepwData(email_add, old1, new1, new2));
+                ChangePassword(new UpdatepwData(old1, new1, new2));
             }
         });
 
@@ -182,13 +180,14 @@ public class Pwd extends AppCompatActivity {
     }
 
     public void ChangePassword(UpdatepwData data){
-        System.out.println("PWDPWDPWD TOKEN !!! : "+ jwtToken);
-        service.updatepw(data).enqueue(new Callback<UpdatepwResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final String token = sp.getString("TOKEN", "");
+        service.updatepw(token, data).enqueue(new Callback<UpdatepwResponse>() {
             @Override
             public void onResponse(Call<UpdatepwResponse> call, Response<UpdatepwResponse> response) {
                 UpdatepwResponse result = response.body();
-                Toast.makeText(Pwd.this, result.getMessage(), Toast.LENGTH_SHORT).show();
                 finish.setBackgroundColor( Color.parseColor("#FDFAFA"));
+                Toast.makeText(Pwd.this, result.getMessage(), Toast.LENGTH_SHORT).show();
                 if(result.getSuccess() == true){
                     Intent intent_mypage = new Intent(getApplicationContext(), MypuppyTab.class);
                     startActivityForResult(intent_mypage, 2000);

@@ -3,9 +3,11 @@ package org.techtown.puppydiary.accountmenu;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -309,7 +311,9 @@ public class MoneyTab extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void ShowAccount() {
-        service.showaccount(year_money, month_money, day_money).enqueue(new Callback<ShowAccountResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.showaccount(token, year_money, month_money, day_money).enqueue(new Callback<ShowAccountResponse>() {
             @Override
             public void onResponse(Call<ShowAccountResponse> call, Response<ShowAccountResponse> response) {
                 ShowAccountResponse showaccount = response.body();
@@ -344,7 +348,9 @@ public class MoneyTab extends AppCompatActivity implements AdapterView.OnItemCli
 
 
     private void InsertAccount(InsertAccountData data){
-        service.insertaccount(data).enqueue(new Callback<InsertAccountResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.insertaccount(token, data).enqueue(new Callback<InsertAccountResponse>() {
             @Override
             public void onResponse(Call<InsertAccountResponse> call, Response<InsertAccountResponse> response) {
                 InsertAccountResponse result = response.body();
@@ -361,7 +367,9 @@ public class MoneyTab extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void CheckAccount(String item, final int price) {
-        service.checkaccount(year_money, month_money, day_money, item, price).enqueue(new Callback<CheckAccountResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.checkaccount(token, year_money, month_money, day_money, item, price).enqueue(new Callback<CheckAccountResponse>() {
             @Override
             public void onResponse(Call<CheckAccountResponse> call, Response<CheckAccountResponse> response) {
                 CheckAccountResponse checkaccount = response.body();

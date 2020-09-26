@@ -2,9 +2,11 @@ package org.techtown.puppydiary.calendarmenu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -97,9 +99,10 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
         actionBar = getSupportActionBar();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffD6336B));
         getSupportActionBar().setTitle("댕댕이어리");
-        actionBar.setIcon(R.drawable.white_puppy) ;
+        actionBar.setIcon(R.drawable.name);
         actionBar.setDisplayUseLogoEnabled(true) ;
         actionBar.setDisplayShowHomeEnabled(true) ;
+
 
 
         Button cal = findViewById(R.id.calendar);
@@ -321,7 +324,9 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
             holder.injection.setImageResource(R.drawable.injection);
 
             final ViewHolder finalHolder = holder;
-            service.showmonth(year, month).enqueue(new Callback<ShowMonthResponse>() {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String token = sp.getString("TOKEN", "");
+            service.showmonth(token, year, month).enqueue(new Callback<ShowMonthResponse>() {
                 @Override
                 public void onResponse(Call<ShowMonthResponse> call, Response<ShowMonthResponse> response) {
                     if (response.isSuccessful()) {
@@ -417,7 +422,9 @@ public class CalendarTab extends AppCompatActivity implements View.OnClickListen
     }
 
     private void ShowDay(ShowDayData data){
-        service.showday(year, month, date).enqueue(new Callback<ShowDayResponse>() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sp.getString("TOKEN", "");
+        service.showday(token, year, month, date).enqueue(new Callback<ShowDayResponse>() {
             @Override
             public void onResponse(Call<ShowDayResponse> call, Response<ShowDayResponse> response) {
                 ShowDayResponse result = response.body();

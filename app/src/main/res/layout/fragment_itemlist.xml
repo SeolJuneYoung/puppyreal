@@ -8,6 +8,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
+        android:fontFamily="@font/jalnan"
         android:padding="8dp"
         android:gravity="center" />
 
@@ -16,6 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
+        android:fontFamily="@font/jalnan"
         android:padding="8dp"
         android:gravity="center" />
 

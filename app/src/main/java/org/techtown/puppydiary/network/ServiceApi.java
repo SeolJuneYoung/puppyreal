@@ -40,6 +40,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -47,8 +48,6 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ServiceApi {
-
-    String jwtToken = Login.jwtToken;
 
 
     @POST("/user/signup") //회원가입
@@ -87,12 +86,10 @@ public interface ServiceApi {
     */
 
 
-    @Headers("token:{jwtToken}")
     @POST("/user/updatepw") //비밀번호 업데이트
-    Call<UpdatepwResponse> updatepw (@Body UpdatepwData data);
+    Call<UpdatepwResponse> updatepw (@Header("token") String token, @Body UpdatepwData data);
     /*
     {
-    "email" : "ga0@naver.com",
     "password" : "123123",
     "newpassword" : "1231234",
     "passwordConfirm" : "1231234"
@@ -100,11 +97,11 @@ public interface ServiceApi {
      */
 
     @GET("/user/getemail") //비밀번호 업데이트
-    Call<EmailResponse> getEmail ();
+    Call<EmailResponse> getEmail (@Header("token") String token);
 
-    @Headers("token:{jwtToken}")
+
     @POST("/mypage/registermyinfo") //강아지 정보 등록/업데이트
-    Call<RegisterResponse> registerinfo (@Body RegisterData data);
+    Call<RegisterResponse> registerinfo (@Header("token") String token, @Body RegisterData data);
     /*
     {
         "puppyname" : "maru",
@@ -114,9 +111,9 @@ public interface ServiceApi {
     }
      */
 
-    @Headers("token:{jwtToken}")
+
     @POST("/user/profile") //프로필 사진 업데이트
-    Call<ProfileResponse> profile (@Body ProfileData data);
+    Call<ProfileResponse> profile (@Header("token") String token, @Body ProfileData data);
     /*
     form-date
     {
@@ -126,41 +123,41 @@ public interface ServiceApi {
      */
 
     @GET("/mypage/myinfo") //강아지 정보 조회
-    Call<MyinfoResponse> Getmyinfo ();
+    Call<MyinfoResponse> Getmyinfo (@Header("token") String token);
 
     @GET("/calendar/show/{year}/{month}") //달력 월별 조회
-    Call<ShowMonthResponse> showmonth (@Path("year") int year, @Path("month") int month);
+    Call<ShowMonthResponse> showmonth (@Header("token") String token, @Path("year") int year, @Path("month") int month);
 
     @GET("/calendar/show/{year}/{month}/{date}") //달력 일일 조회
-    Call<ShowDayResponse> showday (@Path("year") int year, @Path("month") int month, @Path("date") int date);
+    Call<ShowDayResponse> showday (@Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date);
 
     @Multipart
     @POST("/calendar/{year}/{month}/{date}/photo") //달력 사진 업로드
-    Call<CalendarPhotoResponse> calendarphoto (@Path("year") int year, @Path("month") int month, @Path("date") int date,  @Part MultipartBody photo); //@Body CalendarPhotoData data,
+    Call<CalendarPhotoResponse> calendarphoto (@Part MultipartBody.Part img, @Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date); //@Body CalendarPhotoData data,
 
     @POST("/calendar/update") //달력 update
-    Call<CalendarUpdateResponse> calendarupdate (@Body CalendarUpdateData data);
+    Call<CalendarUpdateResponse> calendarupdate (@Header("token") String token, @Body CalendarUpdateData data);
 
     @GET("/kg/show/{year}") //kg 조회
-    Call<ShowKgResponse> showkg (@Path("year") int year);
+    Call<ShowKgResponse> showkg ( @Path("year") int year);
 
     @POST("/kg/update") //kg update
-    Call<KgupdateResponse> kgupdate (@Body KgupdateData data);
+    Call<KgupdateResponse> kgupdate (@Header("token") String token, @Body KgupdateData data);
 
     @GET("/account/show/{year}/{month}/{date}") //가계부 조회
-    Call<ShowAccountResponse> showaccount (@Path("year") int year, @Path("month") int month, @Path("date") int date);
+    Call<ShowAccountResponse> showaccount (@Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date);
 
     @POST("/account/insert") //가계부 아이템 추가
-    Call<InsertAccountResponse> insertaccount (@Body InsertAccountData data);
+    Call<InsertAccountResponse> insertaccount (@Header("token") String token, @Body InsertAccountData data);
 
     @GET("/account/check/{year}/{month}/{date}/{item}/{price}") //가계부 아이템 조회 확인(idx)
-    Call<CheckAccountResponse> checkaccount (@Path("year") int year, @Path("month") int month, @Path("date") int date, @Path("item") String item, @Path("price") int price);
+    Call<CheckAccountResponse> checkaccount (@Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date, @Path("item") String item, @Path("price") int price);
 
     @POST("/account/update/{idaccount}") //가계부 아이템 수정
-    Call<AccountUpdateResponse> accountupdate (@Path("idaccount") int idaccount, @Body AccountUpdateData data);
+    Call<AccountUpdateResponse> accountupdate (@Header("token") String token, @Path("idaccount") int idaccount, @Body AccountUpdateData data);
 
     @DELETE("/account/delete/{idaccount}") //가계부 아이템 삭제
-    Call<DeleteAccountResponse> deleteaccount (@Path("idaccount") int idaccount);
+    Call<DeleteAccountResponse> deleteaccount (@Header("token") String token, @Path("idaccount") int idaccount);
 
 }
 
