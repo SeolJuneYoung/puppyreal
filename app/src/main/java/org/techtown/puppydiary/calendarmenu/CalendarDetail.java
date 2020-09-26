@@ -69,6 +69,7 @@ import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 import retrofit2.Call;
@@ -207,6 +208,7 @@ public class CalendarDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
                 startActivityForResult(intent, REQUEST_CODE);
                 /*
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -298,26 +300,14 @@ public class CalendarDetail extends AppCompatActivity {
 
     private void CalendarPhoto(){
 
-        // File file = new File(mediaPath);
-        //  RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-file"), file);
-        // MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
+        System.out.println("!!!!!!! " + mediaPath);
 
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
-
-        builder.addFormDataPart("key", "multipart/form-data");
-        builder.addFormDataPart("values", mediaPath);
-        System.out.println(mediaPath);
-
+        File file = new File(mediaPath);
+        RequestBody requestBody = RequestBody.create(MultipartBody.FORM, file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sp.getString("TOKEN", "");
-
-        //Toast.makeText(CalendarDetail.this, token, Toast.LENGTH_SHORT).show();
-
-        File file = new File(mediaPath);
-        MultipartBody requestBody = builder.build();
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("profile", file.getName(), requestBody);
         service.calendarphoto(fileToUpload, token, year, month, date).enqueue(new Callback<CalendarPhotoResponse>() {
             @Override
             public void onResponse(Call<CalendarPhotoResponse> call, Response<CalendarPhotoResponse> response) {
@@ -349,10 +339,8 @@ public class CalendarDetail extends AppCompatActivity {
                         }
                         if (my.get(0).getPhoto() != null) {
                             photo = my.get(0).getPhoto();
-                            System.out.println("!!!!!!! "+photo);
                             Picasso.get().load(photo).into(image_upload);
                         }
-
                         state_waterdrop = my.get(0).getWater();
                         state_injection = my.get(0).getInject();
                         if (state_waterdrop == 1 && state_injection == 0) {

@@ -134,13 +134,14 @@ public interface ServiceApi {
 
     @Multipart
     @POST("/calendar/{year}/{month}/{date}/photo") //달력 사진 업로드
-    Call<CalendarPhotoResponse> calendarphoto (@Part MultipartBody.Part img, @Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date); //@Body CalendarPhotoData data,
+    Call<CalendarPhotoResponse> calendarphoto (@Part MultipartBody.Part profile, @Header("token") String token, @Path("year") int year, @Path("month") int month, @Path("date") int date); //@Body CalendarPhotoData data,
 
     @POST("/calendar/update") //달력 update
     Call<CalendarUpdateResponse> calendarupdate (@Header("token") String token, @Body CalendarUpdateData data);
 
     @GET("/kg/show/{year}") //kg 조회
-    Call<ShowKgResponse> showkg (@Header("token") String token, @Path("year") int year);
+    //Call<ShowKgResponse> showkg (@Header("token") String token, @Path("year") int year);
+    Call<ShowKgResponse> showkg (@Path("year") int year);
 
     @POST("/kg/update") //kg update
     Call<KgupdateResponse> kgupdate (@Header("token") String token, @Body KgupdateData data);
