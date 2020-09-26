@@ -59,30 +59,29 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="52dp"
+            android:layout_width="72dp"
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/chart"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/blank"
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:background="@drawable/rect_kg_box"
-                android:textSize="15sp" />
+                android:layout_height="19dp" />
 
             <Button
                 android:id="@+id/jan"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="33dp"
                 android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
@@ -92,7 +91,7 @@
             <Button
                 android:id="@+id/feb"
                 android:layout_width="match_parent"
-                android:layout_height="34dp"
+                android:layout_height="33dp"
                 android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
@@ -102,7 +101,7 @@
             <Button
                 android:id="@+id/mar"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="33dp"
                 android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
@@ -112,7 +111,7 @@
             <Button
                 android:id="@+id/apr"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="33dp"
                 android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
@@ -132,7 +131,7 @@
             <Button
                 android:id="@+id/jun"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="33dp"
                 android:layout_weight="1"
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
@@ -197,13 +196,6 @@
                 android:background="#F9F9F9"
                 android:fontFamily="@font/jalnan"
                 android:text="Dec"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/blank2"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@drawable/rect_kg_box"
                 android:textSize="15sp" />
 
 

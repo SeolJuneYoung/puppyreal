@@ -94,87 +94,6 @@ public class KgTab extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         service = RetrofitClient.getClient().create(ServiceApi.class);
 
-        final Call<ShowKgResponse> getCall = service.showkg(year_kg);
-        Log.e("getDataset year_kg", String.valueOf(year_kg));
-        getCall.enqueue(new Callback<ShowKgResponse>() {
-
-            @Override
-            public void onResponse(Call<ShowKgResponse> call, Response<ShowKgResponse> response) {
-                if (response.isSuccessful()) {
-//    private void  ShowKg(int yearr) {
-//        service.showkg(year_kg).enqueue(new Callback<ShowKgResponse>() {
-//            @Override
-//            public void onResponse(Call<ShowKgResponse> call, Response<ShowKgResponse> response) {
-//
-                    ShowKgResponse showkg = response.body();
-                    List<ShowKgResponse.ShowKg> my = showkg.getData();
-
-                    String result = "";
-
-                    for (ShowKgResponse.ShowKg showkg1 : my) {
-                        puppy_kg = showkg1.getKg();
-                        Log.e("puppy kg", String.valueOf(puppy_kg));
-                        Log.e("puppy kg year", String.valueOf(year_kg));
-                        month_kg = showkg1.getMonth();
-                        Log.e("month kg", String.valueOf(month_kg));
-                        Log.e("month kg year", String.valueOf(year_kg));
-                        if (month_kg == 1) {
-                            jan_kg = puppy_kg;
-                            Log.e("jan" , String.valueOf(jan_kg));
-                        }
-                        else if (month_kg == 2) {
-                            feb_kg = puppy_kg;
-                            Log.e("feb" , String.valueOf(feb_kg));
-                        }
-                        else if (month_kg == 3) {
-                            mar_kg = puppy_kg;
-                            Log.e("mar" , String.valueOf(mar_kg));
-                        }
-                        else if (month_kg == 4) {
-                            apr_kg = puppy_kg;
-                            Log.e("apr" , String.valueOf(apr_kg));
-                        }
-                        else if (month_kg == 5) {
-                            may_kg = puppy_kg;
-                            Log.e("may" , String.valueOf(may_kg));
-                        }
-                        else if (month_kg == 6) {
-                            jun_kg = puppy_kg;
-                            Log.e("jun" , String.valueOf(jun_kg));
-                        }
-                        else if (month_kg == 7) {
-                            jul_kg = puppy_kg;
-                            Log.e("jul" , String.valueOf(jul_kg));
-                        }
-                        else if (month_kg == 8) {
-                            aug_kg = puppy_kg;
-                            Log.e("aug" , String.valueOf(aug_kg));
-                        }
-                        else if (month_kg == 9) {
-                            sep_kg = puppy_kg;
-                            Log.e("sep" , String.valueOf(sep_kg));
-                        }
-                        else if (month_kg == 10) {
-                            oct_kg = puppy_kg;
-                            Log.e("oct" , String.valueOf(oct_kg));
-                        }
-                        else if (month_kg == 11) {
-                            nov_kg = puppy_kg;
-                            Log.e("nov" , String.valueOf(nov_kg));
-                        }
-                        else if (month_kg == 12) {
-                            dec_kg = puppy_kg;
-                            Log.e("dec" , String.valueOf(dec_kg));
-                        }
-                    }
-                }}
-
-            @Override
-            public void onFailure(Call<ShowKgResponse> call, Throwable t) {
-                Toast.makeText(KgTab.this, "show kg 에러 발생", Toast.LENGTH_SHORT).show();
-                Log.e("show kg 에러 발생", t.getMessage());
-            }
-        });
         setContentView(R.layout.activity_kg);
         Log.e("now year", String.valueOf(year_kg));
 
@@ -191,7 +110,6 @@ public class KgTab extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true) ;
 
 
-
         HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
 
         chart.getXAxis().setDrawGridLines(false); //grid 선 없애주기
@@ -201,13 +119,8 @@ public class KgTab extends AppCompatActivity {
         x.setTextColor(0x00000000); //x 변수 안 보이게 설정
 
 
+        ShowKg();
 
-        ArrayList<BarEntry> entries = new ArrayList();
-
-        BarDataSet dataset = new BarDataSet(entries, "체중(kg)");//속성값
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);//color random
-
-        BarData data = new BarData(getDataSet());
 
 //        final ArrayList<String> labels = new ArrayList<>();
 //        labels.add("Jan");
@@ -223,13 +136,6 @@ public class KgTab extends AppCompatActivity {
 //        labels.add("Nov");
 //        labels.add("Dec");
 
-        // chart.setDescription();
-        chart.setTouchEnabled(false);
-        chart.getXAxis().setDrawAxisLine(false);
-        chart.setData(data); // 아래 setData 불러옴
-        chart.setFitBars(true);
-        chart.animateXY(2000, 2000); //애니메이션 기능 추가
-        chart.invalidate(); //invalidate 해줘야 함
 
         //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         //getSupportActionBar().setCustomView(R.layout.custom_bar);
@@ -520,8 +426,7 @@ public class KgTab extends AppCompatActivity {
 //                flag = 1;
                 year_kg = yearr;
                 Log.e("year previous", String.valueOf(year_kg));
-                Intent intent_kg = new Intent(getApplicationContext(), KgTab.class);
-                startActivity(intent_kg);
+                ShowKg();
 
 //                HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
 //
@@ -559,8 +464,7 @@ public class KgTab extends AppCompatActivity {
 //                flag = 1;
                 year_kg = yearr;
                 Log.e("year next", String.valueOf(year_kg));
-                Intent intent_kg = new Intent(getApplicationContext(), KgTab.class);
-                startActivity(intent_kg);
+                ShowKg();
 
 
 //                HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
@@ -673,19 +577,8 @@ public class KgTab extends AppCompatActivity {
 //    }
 
     private BarDataSet getDataSet() { //표시할 데이터 추가
-//
-//        jan_kg = 0;
-//        feb_kg = 0;
-//        mar_kg = 0;
-//        apr_kg = 0;
-//        may_kg = 0;
-//        jun_kg = 0;
-//        jul_kg = 0;
-//        aug_kg = 0;
-//        sep_kg = 0;
-//        oct_kg = 0;
-//        nov_kg = 0;
-//        dec_kg = 0;
+
+
 
 //        final Call<ShowKgResponse> getCall = service.showkg(year_kg);
 //        Log.e("getDataset year_kg", String.valueOf(year_kg));
@@ -813,6 +706,112 @@ public class KgTab extends AppCompatActivity {
 
 
         return dataset;
+    }
+
+    private void ShowKg() {
+        Log.e("getDataset year_kg", String.valueOf(year_kg));
+        service.showkg(year_kg).enqueue(new Callback<ShowKgResponse>() {
+            @Override
+            public void onResponse(Call<ShowKgResponse> call, Response<ShowKgResponse> response) {
+                ShowKgResponse showkg = response.body();
+
+                if (response.isSuccessful()) {
+//    private void  ShowKg(int yearr) {
+//        service.showkg(year_kg).enqueue(new Callback<ShowKgResponse>() {
+//            @Override
+//            public void onResponse(Call<ShowKgResponse> call, Response<ShowKgResponse> response) {
+//
+                    List<ShowKgResponse.ShowKg> my = showkg.getData();
+                    jan_kg = 0;
+                    feb_kg = 0;
+                    mar_kg = 0;
+                    apr_kg = 0;
+                    may_kg = 0;
+                    jun_kg = 0;
+                    jul_kg = 0;
+                    aug_kg = 0;
+                    sep_kg = 0;
+                    oct_kg = 0;
+                    nov_kg = 0;
+                    dec_kg = 0;
+                    if (my != null) {
+                        for (ShowKgResponse.ShowKg showkg1 : my) {
+                            puppy_kg = showkg1.getKg();
+                            month_kg = showkg1.getMonth();
+                            if (month_kg == 1) {
+                                jan_kg = puppy_kg;
+                            } else if (month_kg == 2) {
+                                feb_kg = puppy_kg;
+                            } else if (month_kg == 3) {
+                                mar_kg = puppy_kg;
+                            } else if (month_kg == 4) {
+                                apr_kg = puppy_kg;
+                            } else if (month_kg == 5) {
+                                may_kg = puppy_kg;
+                            } else if (month_kg == 6) {
+                                jun_kg = puppy_kg;
+                            } else if (month_kg == 7) {
+                                jul_kg = puppy_kg;
+                            } else if (month_kg == 8) {
+                                aug_kg = puppy_kg;
+                            } else if (month_kg == 9) {
+                                sep_kg = puppy_kg;
+                            } else if (month_kg == 10) {
+                                oct_kg = puppy_kg;
+                            } else if (month_kg == 11) {
+                                nov_kg = puppy_kg;
+                            } else if (month_kg == 12) {
+                                dec_kg = puppy_kg;
+                            }
+                            BarData data = new BarData(getDataSet());
+
+                            HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
+                            // chart.setDescription();
+                            chart.setTouchEnabled(false);
+                            chart.getXAxis().setDrawAxisLine(false);
+                            chart.setData(data); // 아래 setData 불러옴
+                            chart.setFitBars(true);
+                            chart.animateXY(2000, 2000); //애니메이션 기능 추가
+                            chart.invalidate(); //invalidate 해줘야 함
+                        }
+                    } else {
+                        jan_kg = 0;
+                        feb_kg = 0;
+                        mar_kg = 0;
+                        apr_kg = 0;
+                        may_kg = 0;
+                        jun_kg = 0;
+                        jul_kg = 0;
+                        aug_kg = 0;
+                        sep_kg = 0;
+                        oct_kg = 0;
+                        nov_kg = 0;
+                        dec_kg = 0;
+
+                        BarData data = new BarData(getDataSet());
+
+                        HorizontalBarChart chart = (HorizontalBarChart) findViewById(R.id.chart);
+                        // chart.setDescription();
+                        chart.setTouchEnabled(false);
+                        chart.getXAxis().setDrawAxisLine(false);
+                        chart.setData(data); // 아래 setData 불러옴
+                        chart.setFitBars(true);
+                        chart.animateXY(2000, 2000); //애니메이션 기능 추가
+                        chart.invalidate(); //invalidate 해줘야 함
+                    }
+
+                }
+
+            }
+
+
+
+            @Override
+            public void onFailure(Call<ShowKgResponse> call, Throwable t) {
+                Toast.makeText(KgTab.this, "show kg 에러 발생", Toast.LENGTH_SHORT).show();
+                Log.e("show kg 에러 발생", t.getMessage());
+            }
+        });
     }
 
 //    final Call<ShowKgResponse> getCall = service.showkg();
